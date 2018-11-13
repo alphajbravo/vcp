@@ -251,6 +251,20 @@ static void tx_task(void)
 }
 
 //-----------------------------------------------------------------------------
+void cdc_putByte(uint8_t b){
+	  if (!app_send_buffer_free)
+	  return;
+
+	  app_uart_timeout = get_system_time() + UART_WAIT_TIMEOUT;
+	  app_send_buffer[app_send_buffer_ptr++] = b;
+
+	  if (USB_BUFFER_SIZE == app_send_buffer_ptr)
+	  {
+		  send_buffer();
+	  }
+}
+
+
 static void rx_task(void)
 {
   int byte;
@@ -260,14 +274,7 @@ static void rx_task(void)
 
   while (uart_read_byte(&byte))
   {
-    app_uart_timeout = get_system_time() + UART_WAIT_TIMEOUT;
-    app_send_buffer[app_send_buffer_ptr++] = byte;
-
-    if (USB_BUFFER_SIZE == app_send_buffer_ptr)
-    {
-      send_buffer();
-      break;
-    }
+    cdc_putByte(byte);
   }
 }
 
