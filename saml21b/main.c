@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Alex Taradov <alex@taradov.com>
+ * Copyright (c) 2017-2019, Alex Taradov <alex@taradov.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@
 #include <stdbool.h>
 #include <stdalign.h>
 #include <string.h>
-#include "samd11.h"
+#include "saml21.h"
 #include "hal_gpio.h"
 #include "nvm_data.h"
 #include "usb.h"
@@ -67,31 +67,39 @@ static int app_status_timeout = 0;
 //-----------------------------------------------------------------------------
 static void sys_init(void)
 {
-  uint32_t coarse, fine;
   uint32_t sn = 0;
+
+  PM->INTFLAG.reg = PM_INTFLAG_PLRDY;
+  PM->PLCFG.reg = PM_PLCFG_PLSEL_PL2;
+  while (!PM->INTFLAG.reg);
+
+  MCLK->LPDIV.reg = MCLK_LPDIV_LPDIV_DIV4;
+  while (0 == (MCLK->INTFLAG.reg & MCLK_INTFLAG_CKRDY));
+
+  MCLK->BUPDIV.reg = MCLK_LPDIV_LPDIV_DIV8;
+  while (0 == (MCLK->INTFLAG.reg & MCLK_INTFLAG_CKRDY));
+
+  OSCCTRL->OSC16MCTRL.reg = OSCCTRL_OSC16MCTRL_ENABLE | OSCCTRL_OSC16MCTRL_FSEL_16;
 
   NVMCTRL->CTRLB.reg = NVMCTRL_CTRLB_CACHEDIS | NVMCTRL_CTRLB_RWS(2);
 
-  SYSCTRL->INTFLAG.reg = SYSCTRL_INTFLAG_BOD33RDY | SYSCTRL_INTFLAG_BOD33DET |
-      SYSCTRL_INTFLAG_DFLLRDY;
+  SUPC->INTFLAG.reg = SUPC_INTFLAG_BOD33RDY | SUPC_INTFLAG_BOD33DET;
+  OSCCTRL->INTFLAG.reg = OSCCTRL_INTFLAG_DFLLRDY | OSCCTRL_INTFLAG_OSC16MRDY;
 
-  coarse = NVM_READ_CAL(NVM_DFLL48M_COARSE_CAL);
-  fine = NVM_READ_CAL(NVM_DFLL48M_FINE_CAL);
+  OSCCTRL->DFLLCTRL.reg = 0;
+  while (0 == (OSCCTRL->STATUS.reg & OSCCTRL_STATUS_DFLLRDY));
 
-  SYSCTRL->DFLLCTRL.reg = 0; // See Errata 9905
-  while (0 == (SYSCTRL->PCLKSR.reg & SYSCTRL_PCLKSR_DFLLRDY));
+  OSCCTRL->DFLLMUL.reg = OSCCTRL_DFLLMUL_MUL(48000) | OSCCTRL_DFLLMUL_CSTEP(1) | OSCCTRL_DFLLMUL_FSTEP(1);
+  while (0 == (OSCCTRL->STATUS.reg & OSCCTRL_STATUS_DFLLRDY));
 
-  SYSCTRL->DFLLMUL.reg = SYSCTRL_DFLLMUL_MUL(48000);
-  SYSCTRL->DFLLVAL.reg = SYSCTRL_DFLLVAL_COARSE(coarse) | SYSCTRL_DFLLVAL_FINE(fine);
+  OSCCTRL->DFLLVAL.reg = OSCCTRL_DFLLVAL_COARSE(NVM_READ_CAL(NVM_DFLL48M_COARSE_CAL)) | OSCCTRL_DFLLVAL_FINE(0x200);
+  while (0 == (OSCCTRL->STATUS.reg & OSCCTRL_STATUS_DFLLRDY));
 
-  SYSCTRL->DFLLCTRL.reg = SYSCTRL_DFLLCTRL_ENABLE | SYSCTRL_DFLLCTRL_USBCRM |
-      SYSCTRL_DFLLCTRL_MODE | SYSCTRL_DFLLCTRL_CCDIS;
+  OSCCTRL->DFLLCTRL.reg = OSCCTRL_DFLLCTRL_ENABLE | OSCCTRL_DFLLCTRL_MODE | OSCCTRL_DFLLCTRL_USBCRM;
+  while (0 == (OSCCTRL->STATUS.reg & OSCCTRL_STATUS_DFLLRDY));
 
-  while (0 == (SYSCTRL->PCLKSR.reg & SYSCTRL_PCLKSR_DFLLRDY));
-
-  GCLK->GENCTRL.reg = GCLK_GENCTRL_ID(0) | GCLK_GENCTRL_SRC(GCLK_SOURCE_DFLL48M) |
-      GCLK_GENCTRL_RUNSTDBY | GCLK_GENCTRL_GENEN;
-  while (GCLK->STATUS.reg & GCLK_STATUS_SYNCBUSY);
+  GCLK->GENCTRL[0].reg = GCLK_GENCTRL_SRC(GCLK_SOURCE_DFLL48M) | GCLK_GENCTRL_GENEN;
+  while (GCLK->SYNCBUSY.reg & GCLK_SYNCBUSY_GENCTRL0);
 
   sn ^= *(volatile uint32_t *)0x0080a00c;
   sn ^= *(volatile uint32_t *)0x0080a040;
@@ -311,4 +319,3 @@ int main(void)
 
   return 0;
 }
-
