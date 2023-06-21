@@ -41,8 +41,8 @@ SUBDIRS :=  \
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../../startup_samd11.c \
 ../../main.c \
+../../startup_samd21.c \
 ../../uart.c \
 ../../usb/usb_cdc.c \
 ../../usb/usb_samd11.c \
@@ -57,8 +57,8 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-startup_samd11.o \
 main.o \
+startup_samd21.o \
 uart.o \
 usb_cdc.o \
 usb_samd11.o \
@@ -66,8 +66,8 @@ usb_descriptors.o \
 usb_std.o
 
 OBJS_AS_ARGS +=  \
-startup_samd11.o \
 main.o \
+startup_samd21.o \
 uart.o \
 usb_cdc.o \
 usb_samd11.o \
@@ -75,8 +75,8 @@ usb_descriptors.o \
 usb_std.o
 
 C_DEPS +=  \
-startup_samd11.d \
 main.d \
+startup_samd21.d \
 uart.d \
 usb_cdc.d \
 usb_samd11.d \
@@ -84,8 +84,8 @@ usb_descriptors.d \
 usb_std.d
 
 C_DEPS_AS_ARGS +=  \
-startup_samd11.d \
 main.d \
+startup_samd21.d \
 uart.d \
 usb_cdc.d \
 usb_samd11.d \
@@ -106,14 +106,14 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-./startup_samd11.o: ../../startup_samd11.c
+./main.o: ../../main.c
 	@echo Building file: $<
 	@echo Invoking: ARM/GNU C Compiler : 6.3.1
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -mthumb -D__SAMD21G18A__ -D__SAMD21G18A__ -DDONT_USE_CMSIS_INIT -DF_CPU=48000000  -I"../../include" -I"../.."  -Os -ffunction-sections -fdata-sections -g3 -Wall -mcpu=cortex-m0plus -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
-./main.o: ../../main.c
+./startup_samd21.o: ../../startup_samd21.c
 	@echo Building file: $<
 	@echo Invoking: ARM/GNU C Compiler : 6.3.1
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -mthumb -D__SAMD21G18A__ -D__SAMD21G18A__ -DDONT_USE_CMSIS_INIT -DF_CPU=48000000  -I"../../include" -I"../.."  -Os -ffunction-sections -fdata-sections -g3 -Wall -mcpu=cortex-m0plus -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

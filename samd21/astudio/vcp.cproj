@@ -514,10 +514,6 @@
       <SubType>compile</SubType>
       <Link>include\saml21j18bu.h</Link>
     </Compile>
-    <Compile Include="..\startup_samd11.c">
-      <SubType>compile</SubType>
-      <Link>startup_samd11.c</Link>
-    </Compile>
     <Compile Include="..\main.c">
       <SubType>compile</SubType>
       <Link>main.c</Link>
@@ -525,6 +521,10 @@
     <Compile Include="..\hal_gpio.h">
       <SubType>compile</SubType>
       <Link>hal_gpio.h</Link>
+    </Compile>
+    <Compile Include="..\startup_samd21.c">
+      <SubType>compile</SubType>
+      <Link>startup_samd21.c</Link>
     </Compile>
     <Compile Include="..\uart.c">
       <SubType>compile</SubType>

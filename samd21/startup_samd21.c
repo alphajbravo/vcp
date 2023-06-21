@@ -27,13 +27,24 @@ DUMMY void irq_handler_evsys(void);
 DUMMY void irq_handler_sercom0(void);
 DUMMY void irq_handler_sercom1(void);
 DUMMY void irq_handler_sercom2(void);
+DUMMY void irq_handler_sercom3(void);
+DUMMY void irq_handler_sercom4(void);
+DUMMY void irq_handler_sercom5(void);
 DUMMY void irq_handler_tcc0(void);
-DUMMY void irq_handler_tc1(void);
-DUMMY void irq_handler_tc2(void);
+DUMMY void irq_handler_tcc1(void);
+DUMMY void irq_handler_tcc2(void);
+DUMMY void irq_handler_tcc3(void);
+DUMMY void irq_handler_tc3(void);
+DUMMY void irq_handler_tc4(void);
+DUMMY void irq_handler_tc5(void);
+DUMMY void irq_handler_tc6(void);
+DUMMY void irq_handler_tc7(void);
 DUMMY void irq_handler_adc(void);
 DUMMY void irq_handler_ac(void);
 DUMMY void irq_handler_dac(void);
 DUMMY void irq_handler_ptc(void);
+DUMMY void irq_handler_i2s(void);
+DUMMY void irq_handler_ac1(void);
 
 extern int main(void);
 
@@ -80,13 +91,24 @@ void (* const vectors[])(void) =
   irq_handler_sercom0,           // 9 - Serial Communication Interface 0
   irq_handler_sercom1,           // 10 - Serial Communication Interface 1
   irq_handler_sercom2,           // 11 - Serial Communication Interface 2
-  irq_handler_tcc0,              // 12 - Timer/Counter for Control 0
-  irq_handler_tc1,               // 13 - Timer/Counter 1
-  irq_handler_tc2,               // 14 - Timer/Counter 2
-  irq_handler_adc,               // 15 - Analog-to-Digital Converter
-  irq_handler_ac,                // 16 - Analog Comparator
-  irq_handler_dac,               // 17 - Digital-to-Analog Converter
-  irq_handler_ptc,               // 18 - Peripheral Touch Controller
+  irq_handler_sercom3,           // 12 - Serial Communication Interface 3
+  irq_handler_sercom4,           // 13 - Serial Communication Interface 4
+  irq_handler_sercom5,           // 14 - Serial Communication Interface 5
+  irq_handler_tcc0,              // 15 - Timer/Counter for Control 0
+  irq_handler_tcc1,              // 16 - Timer/Counter for Control 1
+  irq_handler_tcc2,              // 17 - Timer/Counter for Control 2
+  irq_handler_tc3,               // 18 - Timer/Counter 3
+  irq_handler_tc4,               // 19 - Timer/Counter 4
+  irq_handler_tc5,               // 20 - Timer/Counter 5
+  irq_handler_tc6,               // 21 - Timer/Counter 6
+  irq_handler_tc7,               // 22 - Timer/Counter 7
+  irq_handler_adc,               // 23 - Analog-to-Digital Converter
+  irq_handler_ac,                // 24 - Analog Comparator
+  irq_handler_dac,               // 25 - Digital-to-Analog Converter
+  irq_handler_ptc,               // 26 - Peripheral Touch Controller
+  irq_handler_i2s,               // 27 - Inter IC Sound 
+  irq_handler_ac1,               // 28 - Analog Comparator 1
+  irq_handler_tcc3               // 29 - Timer/Counter for Control 3
 };
 
 //-----------------------------------------------------------------------------

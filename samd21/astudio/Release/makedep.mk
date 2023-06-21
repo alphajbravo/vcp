@@ -2,9 +2,9 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
-..\startup_samd11.c
-
 ..\main.c
+
+..\startup_samd21.c
 
 ..\uart.c
 

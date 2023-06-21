@@ -9,14 +9,14 @@
 #include "hal_gpio.h"
 
 /*- Definitions -------------------------------------------------------------*/
-HAL_GPIO_PIN(VCP_STATUS,         A, 4);
+HAL_GPIO_PIN(VCP_STATUS,         A, 28);
 HAL_GPIO_PIN(BOOT_ENTER,         A, 31);
 HAL_GPIO_PIN(UART_TX,            B, 22);
 HAL_GPIO_PIN(UART_RX,            B, 23);
 
 #define UART_SERCOM              SERCOM5
 #define UART_SERCOM_PMUX_RX      PORT_PMUX_PMUXE_D_Val
-#define UART_SERCOM_PMUX_TX      PORT_PMUX_PMUXE_C_Val
+#define UART_SERCOM_PMUX_TX      PORT_PMUX_PMUXE_D_Val
 #define UART_SERCOM_GCLK_ID      SERCOM5_GCLK_ID_CORE
 #define UART_SERCOM_APBCMASK     PM_APBCMASK_SERCOM5
 #define UART_SERCOM_IRQ_INDEX    SERCOM5_IRQn
