@@ -1,0 +1,14 @@
+
+*.log
+
+*.d
+
+*.o
+
+saml21b/astudio/jlink.config
+
+saml21b/astudio/Release/
+
+samd21/astudio/Release/
+
+saml21b/astudio/.vs/vcp/v14/.atsuo
