@@ -6,11 +6,11 @@
 #include <stdbool.h>
 #include <stdalign.h>
 #include "samd21.h"
-#include "hal_gpio.h"
-#include "nvm_data.h"
+#include "../hal_gpio.h"
+#include "../nvm_data.h"
 #include "usb.h"
 #include "usb_std.h"
-#include "usb_descriptors.h"
+#include "../usb_descriptors.h"
 
 /*- Definitions -------------------------------------------------------------*/
 #define USB_EP_NUM     8

@@ -5,7 +5,7 @@
 #include "usb.h"
 #include "usb_std.h"
 #include "usb_cdc.h"
-#include "usb_descriptors.h"
+#include "../usb_descriptors.h"
 
 /*- Definitions -------------------------------------------------------------*/
 #define ONE_SHOT_STATES (USB_CDC_SERIAL_STATE_BREAK | USB_CDC_SERIAL_STATE_RING | \
