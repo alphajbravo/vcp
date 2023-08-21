@@ -267,6 +267,65 @@ static void status_timer_task(void)
 }
 
 //-----------------------------------------------------------------------------
+
+
+static int cdc_getc(void){
+    if(app_recv_buffer_size)
+    {
+        uint8_t byte = app_recv_buffer[app_recv_buffer_ptr];
+
+        app_recv_buffer_ptr++;
+        app_recv_buffer_size--;
+        app_vcp_event = true;
+
+        if (0 == app_recv_buffer_size)
+        usb_cdc_recv(app_recv_buffer, sizeof(app_recv_buffer));
+        return byte;
+    }
+    else return -1;
+}
+
+static void cdc_putc(char c){
+    app_send_buffer[app_send_buffer_ptr++] = c;
+    
+    app_uart_timeout = app_system_time + UART_WAIT_TIMEOUT;
+    
+    if (USB_BUFFER_SIZE == app_send_buffer_ptr)
+    {
+        send_buffer();
+//         break;
+    }
+}
+
+static void cdc_loopback_task(void){
+    int c = cdc_getc();
+    while( c > 0 ){
+        cdc_putc(c);
+        c = cdc_getc();
+    }
+//     while (app_recv_buffer_size)
+//     {
+//         uint8_t byte = app_recv_buffer[app_recv_buffer_ptr];
+// 
+//         app_recv_buffer_ptr++;
+//         app_recv_buffer_size--;
+//         app_vcp_event = true;
+// 
+//         if (0 == app_recv_buffer_size)
+//         usb_cdc_recv(app_recv_buffer, sizeof(app_recv_buffer));
+//         
+// 
+//         app_send_buffer[app_send_buffer_ptr++] = byte;
+// 
+//       if (USB_BUFFER_SIZE == app_send_buffer_ptr)
+//       {
+//         send_buffer();
+//         break;
+//       }
+//     }
+}
+
+//-----------------------------------------------------------------------------
 int main(void)
 {
   sys_init();
@@ -289,13 +348,14 @@ int main(void)
     sys_time_task();
     status_timer_task();
     usb_task();
-    tx_task();
-    rx_task();
+//     tx_task();
+//     rx_task();
+    cdc_loopback_task();
     break_task();
     uart_timer_task();
 
-    if (0 == HAL_GPIO_BOOT_ENTER_read())
-      NVIC_SystemReset();
+//     if (0 == HAL_GPIO_BOOT_ENTER_read())
+//       NVIC_SystemReset();
   }
 
   return 0;
