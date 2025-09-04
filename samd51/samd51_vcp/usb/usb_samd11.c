@@ -68,18 +68,7 @@ static void usb_reset_endpoints(void);
 //-----------------------------------------------------------------------------
 void usb_hw_init(void)
 {
-//   HAL_GPIO_USB_DM_pmuxen(HAL_GPIO_PMUX_H);
-//   HAL_GPIO_USB_DP_pmuxen(HAL_GPIO_PMUX_H);
-  IO_AF_SEL(USB_DM, H);
-  IO_AF_EN(USB_DM);
-  IO_AF_SEL(USB_DP, H);
-  IO_AF_EN(USB_DP);
-
-//   PM->APBBMASK.reg |= PM_APBBMASK_USB;
-  MCLK->APBBMASK.reg |= MCLK_APBBMASK_USB;
-
-//   GCLK->CLKCTRL.reg = GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_ID(USB_GCLK_ID) | GCLK_CLKCTRL_GEN(0);
-  GCLK->PCHCTRL[10].reg = GCLK_PCHCTRL_CHEN | GCLK_PCHCTRL_GEN_GCLK0;
+    // NB: assumes GPIO and clocks are configured elsewhere
 
   USB->DEVICE.CTRLA.bit.SWRST = 1;
   while (USB->DEVICE.SYNCBUSY.bit.SWRST);

@@ -2,6 +2,7 @@
 #include "nvm_data.h"
 #include "usb/usb.h"
 #include "uart.h"
+#include "gpio.h"
 
 
 /*- Definitions -------------------------------------------------------------*/
@@ -274,11 +275,23 @@ static void cdc_loopback_task(void){
     }
 }
 
+static void usb_ll_init(){
+    IO_AF_SEL(USB_DM, H);
+    IO_AF_EN(USB_DM);
+    IO_AF_SEL(USB_DP, H);
+    IO_AF_EN(USB_DP);
+
+    MCLK->APBBMASK.reg |= MCLK_APBBMASK_USB;
+
+    GCLK->PCHCTRL[10].reg = GCLK_PCHCTRL_CHEN | GCLK_PCHCTRL_GEN_GCLK0;
+}
+
 //-----------------------------------------------------------------------------
 int main(void)
 {
     sys_init();
     sys_time_init();
+    usb_ll_init();
     usb_init();
     usb_cdc_init();
     serial_number_init();
