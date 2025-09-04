@@ -7,7 +7,7 @@
 /*- Includes ----------------------------------------------------------------*/
 #include <stdint.h>
 #include <stdbool.h>
-#include "../usb_descriptors.h"
+#include "usb_descriptors.h"
 
 /*- Prototypes --------------------------------------------------------------*/
 void usb_hw_init(void);

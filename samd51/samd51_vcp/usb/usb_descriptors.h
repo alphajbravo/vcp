@@ -5,10 +5,9 @@
 #define _USB_DESCRIPTORS_H_
 
 /*- Includes ----------------------------------------------------------------*/
-#include "usb/usb_std.h"
-#include "usb/usb_cdc.h"
-#include "usb/usb_hid.h"
-// #include "hal_config.h"
+#include "usb_std.h"
+#include "usb_cdc.h"
+#include "usb_hid.h"
 
 /*- Definitions -------------------------------------------------------------*/
 #define USB_BCD_VERSION      0x0200

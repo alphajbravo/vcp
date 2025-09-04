@@ -4,7 +4,7 @@
 /*- Includes ----------------------------------------------------------------*/
 #include "usb.h"
 #include "usb_std.h"
-#include "../usb_descriptors.h"
+#include "usb_descriptors.h"
 
 /*- Definitions -------------------------------------------------------------*/
 #define USB_EP_NUM     16

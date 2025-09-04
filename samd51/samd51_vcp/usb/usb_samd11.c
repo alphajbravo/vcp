@@ -10,7 +10,7 @@
 #include "../nvm_data.h"
 #include "usb.h"
 #include "usb_std.h"
-#include "../usb_descriptors.h"
+#include "usb_descriptors.h"
 
 /*- Definitions -------------------------------------------------------------*/
 #define USB_EP_NUM     8
@@ -84,9 +84,9 @@ void usb_hw_init(void)
   USB->DEVICE.CTRLA.bit.SWRST = 1;
   while (USB->DEVICE.SYNCBUSY.bit.SWRST);
 
-  USB->DEVICE.PADCAL.bit.TRANSN = NVM_READ_CAL(NVM_USB_TRANSN);
-  USB->DEVICE.PADCAL.bit.TRANSP = NVM_READ_CAL(NVM_USB_TRANSP);
-  USB->DEVICE.PADCAL.bit.TRIM   = NVM_READ_CAL(NVM_USB_TRIM);
+  USB->DEVICE.PADCAL.bit.TRANSN = NVM_READ_CAL(NVM_SWCAL_USB_TRANSN);
+  USB->DEVICE.PADCAL.bit.TRANSP = NVM_READ_CAL(NVM_SWCAL_USB_TRANSP);
+  USB->DEVICE.PADCAL.bit.TRIM   = NVM_READ_CAL(NVM_SWCAL_USB_TRIM);
 
   usb_setup_length = -1;
 
