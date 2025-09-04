@@ -6,7 +6,6 @@
 #include <stdbool.h>
 #include <stdalign.h>
 #include "sam.h"
-#include "../gpio.h"
 #include "../nvm_data.h"
 #include "usb.h"
 #include "usb_std.h"
@@ -14,10 +13,6 @@
 
 /*- Definitions -------------------------------------------------------------*/
 #define USB_EP_NUM     8
-
-// HAL_GPIO_PIN(USB_DM,   A, 24);
-// HAL_GPIO_PIN(USB_DP,   A, 25);
-
 
 enum
 {
