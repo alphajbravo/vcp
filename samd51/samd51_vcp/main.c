@@ -272,26 +272,6 @@ static void cdc_loopback_task(void){
         cdc_putc(c);
         c = cdc_getc();
     }
-    //     while (app_recv_buffer_size)
-    //     {
-    //         uint8_t byte = app_recv_buffer[app_recv_buffer_ptr];
-    //
-    //         app_recv_buffer_ptr++;
-    //         app_recv_buffer_size--;
-    //         app_vcp_event = true;
-    //
-    //         if (0 == app_recv_buffer_size)
-    //         usb_cdc_recv(app_recv_buffer, sizeof(app_recv_buffer));
-    //
-    //
-    //         app_send_buffer[app_send_buffer_ptr++] = byte;
-    //
-    //       if (USB_BUFFER_SIZE == app_send_buffer_ptr)
-    //       {
-    //         send_buffer();
-    //         break;
-    //       }
-    //     }
 }
 
 //-----------------------------------------------------------------------------

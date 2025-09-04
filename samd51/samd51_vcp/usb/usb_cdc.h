@@ -200,6 +200,7 @@ void usb_cdc_set_state(int mask);
 void usb_cdc_clear_state(int mask);
 usb_cdc_line_coding_t *usb_cdc_get_line_coding(void);
 
+// application callbacks
 void usb_cdc_send_callback(void);
 void usb_cdc_recv_callback(int size);
 void usb_cdc_line_coding_updated(usb_cdc_line_coding_t *line_coding);

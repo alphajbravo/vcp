@@ -156,9 +156,6 @@
     <Compile Include="gpio.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="hal_config.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
@@ -180,6 +177,12 @@
     <Compile Include="usb\usb_cdc.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="usb\usb_descriptors.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="usb\usb_descriptors.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="usb\usb_samd11.c">
       <SubType>compile</SubType>
     </Compile>
@@ -187,12 +190,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="usb\usb_std.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="usb_descriptors.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="usb_descriptors.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
