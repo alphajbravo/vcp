@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "sam.h"
-#include "hal_config.h"
+// #include "hal_config.h"
 #include "uart.h"
 #include "usb/usb_cdc.h"
 
@@ -111,8 +111,8 @@ void uart_init(usb_cdc_line_coding_t *line_coding)
 //-----------------------------------------------------------------------------
 void uart_close(void)
 {
-  UART_SERCOM->USART.CTRLA.reg = SERCOM_USART_CTRLA_SWRST;
-  while (UART_SERCOM->USART.CTRLA.bit.SWRST);
+//   UART_SERCOM->USART.CTRLA.reg = SERCOM_USART_CTRLA_SWRST;
+//   while (UART_SERCOM->USART.CTRLA.bit.SWRST);
 }
 
 //-----------------------------------------------------------------------------
@@ -185,50 +185,50 @@ bool uart_read_byte(int *byte)
 //-----------------------------------------------------------------------------
 void uart_set_break(bool brk)
 {
-  if (brk)
-    HAL_GPIO_UART_TX_pmuxdis();
-  else
-    ;
-  //TODO
-//     HAL_GPIO_UART_TX_pmuxen(UART_SERCOM_PMUX_TX);
+//   if (brk)
+// //     HAL_GPIO_UART_TX_pmuxdis();
+//   else
+//     ;
+//   //TODO
+// //     HAL_GPIO_UART_TX_pmuxen(UART_SERCOM_PMUX_TX);
 }
 
 //-----------------------------------------------------------------------------
 void UART_SERCOM_IRQ_HANDLER(void)
 {
-  int flags = UART_SERCOM->USART.INTFLAG.reg;
-
-  if (flags & SERCOM_USART_INTFLAG_RXC)
-  {
-    int status = UART_SERCOM->USART.STATUS.reg;
-    int byte = UART_SERCOM->USART.DATA.reg;
-    int state = 0;
-
-    UART_SERCOM->USART.STATUS.reg = status;
-
-    if (status & SERCOM_USART_STATUS_BUFOVF)
-      state |= USB_CDC_SERIAL_STATE_OVERRUN;
-
-    if (status & SERCOM_USART_STATUS_FERR)
-      state |= USB_CDC_SERIAL_STATE_FRAMING;
-
-    if (status & SERCOM_USART_STATUS_PERR)
-      state |= USB_CDC_SERIAL_STATE_PARITY;
-
-    byte |= (state << 8);
-
-    if (!fifo_push(&uart_rx_fifo, byte))
-      uart_fifo_overflow = true;
-  }
-
-  if (flags & SERCOM_USART_INTFLAG_DRE)
-  {
-    int byte;
-
-    if (fifo_pop(&uart_tx_fifo, &byte))
-      UART_SERCOM->USART.DATA.reg = byte;
-    else
-      UART_SERCOM->USART.INTENCLR.reg = SERCOM_USART_INTENCLR_DRE;
-  }
+//   int flags = UART_SERCOM->USART.INTFLAG.reg;
+// 
+//   if (flags & SERCOM_USART_INTFLAG_RXC)
+//   {
+//     int status = UART_SERCOM->USART.STATUS.reg;
+//     int byte = UART_SERCOM->USART.DATA.reg;
+//     int state = 0;
+// 
+//     UART_SERCOM->USART.STATUS.reg = status;
+// 
+//     if (status & SERCOM_USART_STATUS_BUFOVF)
+//       state |= USB_CDC_SERIAL_STATE_OVERRUN;
+// 
+//     if (status & SERCOM_USART_STATUS_FERR)
+//       state |= USB_CDC_SERIAL_STATE_FRAMING;
+// 
+//     if (status & SERCOM_USART_STATUS_PERR)
+//       state |= USB_CDC_SERIAL_STATE_PARITY;
+// 
+//     byte |= (state << 8);
+// 
+//     if (!fifo_push(&uart_rx_fifo, byte))
+//       uart_fifo_overflow = true;
+//   }
+// 
+//   if (flags & SERCOM_USART_INTFLAG_DRE)
+//   {
+//     int byte;
+// 
+//     if (fifo_pop(&uart_tx_fifo, &byte))
+//       UART_SERCOM->USART.DATA.reg = byte;
+//     else
+//       UART_SERCOM->USART.INTENCLR.reg = SERCOM_USART_INTENCLR_DRE;
+//   }
 }
 

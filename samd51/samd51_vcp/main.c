@@ -30,32 +30,7 @@ static bool app_vcp_open = false;
 //-----------------------------------------------------------------------------
 static void sys_init(void)
 {
-    // starts up running from DFLL48, so should be no need for all of this
-    
-//     uint32_t coarse, fine;
-// 
-//     NVMCTRL->CTRLB.reg = NVMCTRL_CTRLB_RWS(1);
-// 
-//     SYSCTRL->INTFLAG.reg = SYSCTRL_INTFLAG_BOD33RDY | SYSCTRL_INTFLAG_BOD33DET |
-//     SYSCTRL_INTFLAG_DFLLRDY;
-// 
-//     coarse = NVM_READ_CAL(NVM_DFLL48M_COARSE_CAL);
-//     fine = NVM_READ_CAL(NVM_DFLL48M_FINE_CAL);
-// 
-//     SYSCTRL->DFLLCTRL.reg = 0; // See Errata 9905
-//     while (0 == (SYSCTRL->PCLKSR.reg & SYSCTRL_PCLKSR_DFLLRDY));
-// 
-//     SYSCTRL->DFLLMUL.reg = SYSCTRL_DFLLMUL_MUL(48000);
-//     SYSCTRL->DFLLVAL.reg = SYSCTRL_DFLLVAL_COARSE(coarse) | SYSCTRL_DFLLVAL_FINE(fine);
-// 
-//     SYSCTRL->DFLLCTRL.reg = SYSCTRL_DFLLCTRL_ENABLE | SYSCTRL_DFLLCTRL_USBCRM |
-//     SYSCTRL_DFLLCTRL_MODE | SYSCTRL_DFLLCTRL_CCDIS;
-// 
-//     while (0 == (SYSCTRL->PCLKSR.reg & SYSCTRL_PCLKSR_DFLLRDY));
-// 
-//     GCLK->GENCTRL.reg = GCLK_GENCTRL_ID(0) | GCLK_GENCTRL_SRC(GCLK_SOURCE_DFLL48M) |
-//     GCLK_GENCTRL_RUNSTDBY | GCLK_GENCTRL_GENEN;
-//     while (GCLK->STATUS.reg & GCLK_STATUS_SYNCBUSY);
+    // starts up running from DFLL48, so no need for additional main clock config
 }
 
 //-----------------------------------------------------------------------------
@@ -65,10 +40,10 @@ static void serial_number_init(void)
     uint8_t *uid = (uint8_t *)wuid;
     uint32_t sn = 5381;
 
-    wuid[0] = *(volatile uint32_t *)0x008061fc;
-    wuid[1] = *(volatile uint32_t *)0x00806010;
-    wuid[2] = *(volatile uint32_t *)0x00806014;
-    wuid[3] = *(volatile uint32_t *)0x00806018;
+    wuid[0] = *(volatile uint32_t *)NVM_SERIALNUM_W0;
+    wuid[1] = *(volatile uint32_t *)NVM_SERIALNUM_W1;
+    wuid[2] = *(volatile uint32_t *)NVM_SERIALNUM_W2;
+    wuid[3] = *(volatile uint32_t *)NVM_SERIALNUM_W3;
 
     for (int i = 0; i < 16; i++)
     sn = ((sn << 5) + sn) ^ uid[i];
@@ -330,26 +305,14 @@ int main(void)
 
     app_status_timeout = STATUS_TIMEOUT;
 
-//     HAL_GPIO_VCP_STATUS_out();
-//     HAL_GPIO_VCP_STATUS_clr();
-// 
-//     HAL_GPIO_BOOT_ENTER_in();
-//     HAL_GPIO_BOOT_ENTER_pullup();
-//     HAL_GPIO_BOOT_ENTER_pmuxdis();
-
     while (1)
     {
         sys_time_task();
         status_timer_task();
         usb_task();
-        //     tx_task();
-        //     rx_task();
         cdc_loopback_task();
         break_task();
         uart_timer_task();
-
-        //     if (0 == HAL_GPIO_BOOT_ENTER_read())
-        //       NVIC_SystemReset();
     }
 
     return 0;
